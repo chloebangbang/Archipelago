@@ -1,0 +1,28 @@
+from typing import Dict, List
+
+cruelty_squad_regions: Dict[str, List[str]] = {
+    "Menu": ["Cruelty Squad HQ", "Pharmakokinetiks", "Paradise", 
+             "Sin Space Engineering", "Androgen Assault", "Mall Madness",
+             "Apartment Atrocity", "Seaside Shock", "Bog Business",
+             "Casino Catastrophe", "Idiot Party", "Office", "Archon Grid",
+             "Darkworld", "Miner's Miracle", "Neuron Activator", "House",
+             "Trauma Loop"],
+    "Cruelty Squad HQ": ["Menu"],
+    "Pharmakokinetiks": ["Menu"],
+    "Paradise": ["Menu"],
+    "Sin Space Engineering": ["Menu"],
+    "Androgen Assault": ["Menu"],
+    "Mall Madness": ["Menu"],
+    "Apartment Atrocity": ["Menu"],
+    "Seaside Shock": ["Menu"],
+    "Bog Business": ["Menu"],
+    "Casino Catastrophe": ["Menu"],
+    "Idiot Party": ["Menu"],
+    "Office": ["Menu"],
+    "Archon Grid": ["Menu"],
+    "Darkworld": ["Menu"],
+    "Miner's Miracle": ["Menu"],
+    "Neuron Activator": ["Menu"],
+    "House": ["Menu"],
+    "Trauma Loop": ["Menu"],
+}
