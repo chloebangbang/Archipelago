@@ -38,7 +38,7 @@ class IHYPSRules:
         to_beach = self.world.get_entrance("To Beach")
 
         set_rule(to_bar, lambda state: state.has("Bar", self.player))
-        set_rule(to_forest, lambda state: state.has("Forest", self.player) and self.can_do_combat(state))
+        set_rule(to_forest, lambda state: state.has("Forest", self.player) and (self.can_do_combat(state) or self.can_get_money(state)))
         set_rule(to_tower, lambda state: state.has("Tower", self.player))
         set_rule(to_downtown, lambda state: state.has("Downtown", self.player))
         set_rule(to_harbor, lambda state: state.has("Harbor", self.player))
@@ -70,14 +70,19 @@ class IHYPSRules:
             "Mack 2": lambda state: (state.has("Forest", self.player) or state.can_reach_region("Warehouse", self.player)) and self.count_party_members(state) > 2,
             "The Butcher": lambda state: state.has_all(("Tower", "Meat Cleaver"), self.player) and self.count_party_members(state) >= 2,
             "Apartment Sewers": self.can_lockpick,
-            "Sewer Encounter 1": lambda state: self.can_do_combat(state) or self.can_get_money(state),
-            "Sewer Encounter 2": lambda state: self.can_do_combat(state) or self.can_get_money(state),
+            # after much deliberation making these sphere 1
+            # you can run from most of the encounters 100% of the time
+            # and the only ones you have to worry about are the double slimes.
+            # which with the full heal and save of sleeping should be literally fine.
+            # I've never once lost an appreciable amount of health to getting this without combat
+            # "Sewer Encounter 1": lambda state: self.can_do_combat(state) or self.can_get_money(state),
+            # "Sewer Encounter 2": lambda state: self.can_do_combat(state) or self.can_get_money(state),
             "Exterminator": self.can_do_combat,
             "Apartment Musician": lambda state: self.can_get_money(state) and state.has("Downtown", self.player),
             "Snacks: Devon Edition": self.has_devon,
             "Snacks: Kyrie Edition": self.has_kyrie,
             "Snacks: Jasper Edition": self.has_jasper,
-            "Hartford Devil": lambda state: state.can_reach_location("Storm the Manor", self.player) and state.can_reach_location("Necromancy Investigation", self.player) and state.can_reach_location("Lonely Hearts Quest", self.player) and state.can_reach_region("Beach", self.player) and self.count_party_members(state) > 3,
+            "Hartford Devil": lambda state: state.can_reach_location("Storm the Manor", self.player) and state.can_reach_location("Necromancy Investigation", self.player) and state.can_reach_location("Lonely Hearts Quest", self.player) and state.can_reach_region("Beach", self.player) and self.has_full_party(state),
             "Trading Cards 1": lambda state: state.has("Baseball Cards", self.player),
             "Trading Cards 2": lambda state: state.has("Baseball Cards", self.player),
             "Trading Cards 3": lambda state: state.has("Baseball Cards", self.player),
@@ -170,7 +175,7 @@ class IHYPSRules:
             "Trish Tower Room 2": self.can_do_combat,
             "Stratum 2 Reception Chest": self.can_do_combat,
             "Devon: Rest Stop": self.has_devon,
-            "Reach Statum 2": self.can_do_combat,
+            "Reach Stratum 2": self.can_do_combat,
 
             # strata 2
             "Caligostro Floor Chest": lambda state: self.count_party_members(state) == 4,
