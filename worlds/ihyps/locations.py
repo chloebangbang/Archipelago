@@ -29,6 +29,19 @@ apartment_locations = {
     "Stinger Trade": 24,
 }
 
+levelup_locations = {
+    "Level 2": 50,
+    "Level 3": 51,
+    "Level 4": 52,
+    "Level 5": 53,
+    "Level 6": 54,
+    "Level 7": 55,
+    "Level 8": 56,
+    "Level 9": 57,
+    "Level 10": 58,
+    "Level 11": 59,
+}
+
 bar_locations = {
     "Bar Vinyl": 100,
     # kyrie chat
@@ -282,7 +295,7 @@ LOCATION_NAME_TO_ID = apartment_locations | bar_locations | forest_locations | \
     tower_base_locations | strata_one_locations | strata_two_locations | \
     strata_three_locations | downtown_locations | harbor_locations | \
     warehouse_locations | beach_locations | hearts_tower_locations | \
-    wasp_locations | top_floor_locations
+    wasp_locations | top_floor_locations | levelup_locations
 
 class IHYPSLocation(Location):
     game = "I Hate You, Please Suffer"
@@ -306,7 +319,10 @@ def create_regular_locations(world):
     harbor = world.get_region("Harbor")
     beach = world.get_region("Beach")
 
-    apartment.add_locations(apartment_locations, IHYPSLocation)
+    if world.options.skillsanity:
+        apartment.add_locations(apartment_locations | levelup_locations, IHYPSLocation)
+    else:
+        apartment.add_locations(apartment_locations, IHYPSLocation)
     bar.add_locations(bar_locations, IHYPSLocation)
     forest.add_locations(forest_locations, IHYPSLocation)
     wasp_country.add_locations(wasp_locations, IHYPSLocation)

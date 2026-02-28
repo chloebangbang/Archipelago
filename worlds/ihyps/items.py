@@ -14,7 +14,7 @@ class ItemDef:
 
 BASE_ID = 433996108
 
-items: List[ItemDef] = [
+universal_items: List[ItemDef] = [
     ItemDef(BASE_ID + 0, "Devon", IC.progression),
     ItemDef(BASE_ID + 1, "Kyrie", IC.progression),
     ItemDef(BASE_ID + 2, "Jasper", IC.progression),
@@ -85,7 +85,7 @@ items: List[ItemDef] = [
     ItemDef(BASE_ID + 63, "Jasper Gear", IC.useful),
 
     ItemDef(BASE_ID + 64, "Meat Cleaver", IC.progression),
-    ItemDef(BASE_ID + 65, "Magic Knife", IC.progression),
+    # ItemDef(BASE_ID + 65, "Magic Knife", IC.progression),
     ItemDef(BASE_ID + 66, "Trish's Knife", IC.progression),
 
     ItemDef(BASE_ID + 67, "Wrench", IC.progression),
@@ -122,20 +122,6 @@ items: List[ItemDef] = [
     ItemDef(BASE_ID + 93, "Abernathy's Glasses", IC.useful),
     ItemDef(BASE_ID + 94, "Jessie's Pocket Watch", IC.useful),
 
-    # filler items
-    ItemDef(BASE_ID + 95, "Artifact Gatcha", IC.filler),
-    ItemDef(BASE_ID + 96, "Artifact Tarot", IC.useful),
-    ItemDef(BASE_ID + 97, "Mafia Noteriety", IC.trap),
-    ItemDef(BASE_ID + 98, "Cursed!", IC.trap),
-    ItemDef(BASE_ID + 99, "Miracle Drink", IC.filler),
-    ItemDef(BASE_ID + 100, "Unwanted Guest", IC.trap),
-    ItemDef(BASE_ID + 101, "Estrogen", IC.filler),
-    ItemDef(BASE_ID + 102, "Testosterone", IC.filler),
-    ItemDef(BASE_ID + 103, "Albing Knife", IC.filler),
-    ItemDef(BASE_ID + 104, "Albing Staff", IC.filler),
-    ItemDef(BASE_ID + 105, "Albing Hammer", IC.filler),
-    ItemDef(BASE_ID + 106, "Albing Revolver", IC.filler),
-
     # quest rewards
     # stanley quest (normal)
     ItemDef(BASE_ID + 107, "$150", IC.filler),
@@ -160,8 +146,65 @@ items: List[ItemDef] = [
     ItemDef(BASE_ID + 126, "Long Range", IC.useful),
     ItemDef(BASE_ID + 127, "Dodge Roll", IC.useful),
     ItemDef(BASE_ID + 128, "Cry", IC.useful),
-    # TODO: implement skillsanity
 ]
+
+filler_items: List[ItemDef] = [
+    # filler items
+    ItemDef(BASE_ID + 95, "Artifact Gatcha", IC.filler),
+    ItemDef(BASE_ID + 96, "Artifact Tarot", IC.useful),
+    ItemDef(BASE_ID + 97, "Mafia Noteriety", IC.trap),
+    ItemDef(BASE_ID + 98, "Cursed!", IC.trap),
+    ItemDef(BASE_ID + 99, "Miracle Drink", IC.filler),
+    ItemDef(BASE_ID + 100, "Unwanted Guest", IC.trap),
+    ItemDef(BASE_ID + 101, "Estrogen", IC.filler),
+    ItemDef(BASE_ID + 102, "Testosterone", IC.filler),
+    ItemDef(BASE_ID + 103, "Albing Knife", IC.filler),
+    ItemDef(BASE_ID + 104, "Albing Staff", IC.filler),
+    ItemDef(BASE_ID + 105, "Albing Hammer", IC.filler),
+    ItemDef(BASE_ID + 106, "Albing Revolver", IC.filler),
+    ItemDef(BASE_ID + 129, "Albing Weapon", IC.filler),
+    ItemDef(BASE_ID + 130, "Nothing...", IC.filler),
+]
+
+skill_items: List[ItemDef] = [
+    # ramona skills
+    ItemDef(BASE_ID + 150, "Bribe", IC.progression),
+    ItemDef(BASE_ID + 151, "Spray", IC.useful),
+    ItemDef(BASE_ID + 152, "Progressive Lunge", IC.useful),
+    ItemDef(BASE_ID + 153, "Business Talk", IC.progression),
+    ItemDef(BASE_ID + 154, "Self-Care", IC.useful),
+    ItemDef(BASE_ID + 155, "Loud Speech", IC.useful),
+    ItemDef(BASE_ID + 156, "Money Toss", IC.useful),
+    ItemDef(BASE_ID + 157, "Rummage", IC.useful),
+    ItemDef(BASE_ID + 158, "Shank", IC.useful),
+    ItemDef(BASE_ID + 159, "All Business", IC.useful),
+    # devon skills
+    ItemDef(BASE_ID + 160, "Shut You Up", IC.useful),
+    ItemDef(BASE_ID + 161, "True Silence", IC.progression),
+    ItemDef(BASE_ID + 162, "Erase Presence", IC.useful),
+    ItemDef(BASE_ID + 163, "Silence is Bliss", IC.useful),
+    ItemDef(BASE_ID + 164, "Swing for the Fences", IC.useful),
+    ItemDef(BASE_ID + 165, "Redirected Noise", IC.useful),
+    # kyrie skills
+    ItemDef(BASE_ID + 166, "Death Threats", IC.useful),
+    ItemDef(BASE_ID + 167, "Focused Blow", IC.useful),
+    ItemDef(BASE_ID + 168, "Mask Up", IC.useful),
+    ItemDef(BASE_ID + 169, "Blood Rush", IC.useful),
+    ItemDef(BASE_ID + 170, "Hunt Down", IC.useful),
+    ItemDef(BASE_ID + 171, "Vengeance", IC.useful),
+    ItemDef(BASE_ID + 172, "Crocodile Tears", IC.useful),
+    # jasper skills
+    # not randomizing reload. that would suck bad
+    # magic bullet is the reason I'm bothering randomizing starting skills at all. its so good
+    # actually busted skill
+    ItemDef(BASE_ID + 173, "Magic Bullet", IC.useful),
+    ItemDef(BASE_ID + 174, "Perfect Shot", IC.useful),
+    ItemDef(BASE_ID + 175, "Bullet Time", IC.useful),
+    ItemDef(BASE_ID + 176, "Close Range", IC.useful),
+    ItemDef(BASE_ID + 177, "Gun Whip", IC.useful),
+]
+
+items = universal_items + filler_items + skill_items
 
 ITEM_NAME_TO_ID = {item.name: item.id for item in items}
 
@@ -188,16 +231,16 @@ def get_random_filler_item_name(world) -> str:
             return "Testosterone"
         elif filler_roll < 86:
             return "Artifact Tarot"
-        elif filler_roll < 90:
-            return "Albing Knife"
-        elif filler_roll < 93:
-            return "Albing Staff"
-        elif filler_roll < 96:
-            return "Albing Hammer"
+        elif filler_roll < 88:
+            return "Nothing..."
         else:
-            return "Albing Revolver"
+            return "Albing Weapon"
 
 def create_item(world, name: str) -> IHYPSItem:
+    # TODO: find out why the hell this would ever need to be a line of code
+    # what is going on. this is a hacky fix. why do I need to create none item
+    if name == None:
+        name = get_random_filler_item_name(world)
     # I am deeply regretting the way I structured this
     itemdef = [item for item in items if item.name == name][0]
 
@@ -205,9 +248,11 @@ def create_item(world, name: str) -> IHYPSItem:
 
 def create_all_items(world) -> IHYPSItem:
     itempool: list[IHYPSItem] = []
-    for item in items:
-        # I am GREATLY regretting how I structured this
-        if item.id < 95 or item.id > 106:
+    randomized_items = universal_items
+    if world.options.skillsanity:
+        randomized_items += skill_items
+    for item in randomized_items:
+        if not (world.options.skillsanity and item.name == "Perfect Lunge"): 
             for _ in range(item.count):
                 itempool.append(world.create_item(item.name))
     item_count = len(itempool)

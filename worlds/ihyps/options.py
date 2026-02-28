@@ -2,6 +2,15 @@ from dataclasses import dataclass
 
 from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle
 
+class NoLogic(Toggle):
+    """
+    Whether to disable logic. If logic is disabled, items will be placed randomly.
+
+    WARNING: if you select no logic, your seed will be, in all likelihood, uncompletable. 
+    This is an option put here by and for sickos. Proceed with extreme caution
+    """
+    display_name = "No Logic"
+
 # class Goal(Choice):
     # """
     # The victory condition of the world.
@@ -17,9 +26,14 @@ from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle
     # option_fresh_start: 0
     # option_happy_ending: 1
     # option_happy_ending_plus_gacy: 2
-    # option_rental: 3
 
     # default = option_happy_ending_plus_gacy
+
+class Skillsanity(Toggle):
+    """
+    Locks all skills learned by level up behind a requisite item.
+    Also adds locations on level up to make leveling up not wholly useless.
+    """
 
 class TrapChance(Range):
     display_name = "Trap Chance"
@@ -30,5 +44,7 @@ class TrapChance(Range):
 
 @dataclass
 class IHYPSOptions(PerGameCommonOptions):
+    no_logic: NoLogic
     # goal: Goal
+    skillsanity: Skillsanity
     trap_chance: TrapChance

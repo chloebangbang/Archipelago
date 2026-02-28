@@ -49,5 +49,5 @@ class IHYPSWorld(World):
 
     def fill_slot_data(self) -> Mapping[str, any]:
         return self.options.as_dict(
-            "trap_chance",
+            "trap_chance", "skillsanity"
         )

@@ -5,9 +5,10 @@ from worlds.AutoWorld import World
 from worlds.generic.Rules import add_rule, set_rule
 
 def set_all_rules(world) -> None:
-    rules = IHYPSRules(world)
-    rules.set_all_entrance_rules()
-    rules.set_all_location_rules()
+    if not world.options.no_logic:
+        rules = IHYPSRules(world)
+        rules.set_all_entrance_rules()
+        rules.set_all_location_rules()
 
 # based on inscryption's implementation
 # which itself says its based on the messenger's implementation
@@ -38,7 +39,15 @@ class IHYPSRules:
         to_beach = self.world.get_entrance("To Beach")
 
         set_rule(to_bar, lambda state: state.has("Bar", self.player))
-        set_rule(to_forest, lambda state: state.has("Forest", self.player) and (self.can_do_combat(state) or self.can_get_money(state)))
+        if self.world.options.skillsanity:
+            set_rule(to_forest, lambda state: state.has("Forest", self.player) and (self.can_do_combat(state) or (state.has("Bribery", self.player) and self.can_get_money(state))))
+            set_rule(to_top_floor, lambda state: state.has_all_counts({"Final Boss Key": 4, "Progressive Dungeon Stone": 2}, self.player) and (self.has_full_party(state) or state.has_all(("Devon", "Business Talk", "All Business", "True Silence"), self.player)))
+            set_rule(top_floor_warp, lambda state: state.has_all_counts({"Progressive Dungeon Stone": 3, "Final Boss Key": 4}, self.player) and ((state.has_all(("Devon", "Business Talk", "All Business", "True Silence"), self.player) and self.count_party_members(state) >= 3) or self.has_full_party(state)))
+        else:
+            set_rule(to_forest, lambda state: state.has("Forest", self.player) and (self.can_do_combat(state) or self.can_get_money(state)))
+            set_rule(to_top_floor, lambda state: self.has_devon(state) and state.has_all_counts({"Final Boss Key": 4, "Progressive Dungeon Stone": 2}, self.player))
+            # this is maybe a little lenient, but you can cheese the everloving shit out of melchom with silence + all business business talk
+            set_rule(top_floor_warp, lambda state: self.has_devon(state) and state.has_all_counts({"Progressive Dungeon Stone": 3, "Final Boss Key": 4}, self.player) and self.count_party_members(state) >= 3)
         set_rule(to_tower, lambda state: state.has("Tower", self.player))
         set_rule(to_downtown, lambda state: state.has("Downtown", self.player))
         set_rule(to_harbor, lambda state: state.has("Harbor", self.player))
@@ -47,10 +56,7 @@ class IHYPSRules:
         set_rule(to_stratum_one, lambda state: state.has("Progressive AL Rank", self.player) and self.can_lockpick(state))   
         set_rule(to_stratum_two, lambda state: state.has("Kyrie", self.player))
         set_rule(to_stratum_three, lambda state: state.has_all(("Jasper", "Progressive Dungeon Stone"), self.player))
-        set_rule(to_top_floor, lambda state: self.has_devon(state) and state.count("Progressive Dungeon Stone", self.player) >= 2 and state.count("Final Boss Key", self.player) >= 4)
         set_rule(stratum_three_warp, lambda state: self.has_jasper(state) and state.count("Progressive Dungeon Stone", self.player) >= 2)
-        # this is maybe a little lenient, but you can cheese the everloving shit out of melchom with silence + all business business talk
-        set_rule(top_floor_warp, lambda state: self.has_devon(state) and state.has_all_counts({"Progressive Dungeon Stone": 3, "Final Boss Key": 4}, self.player) and self.count_party_members(state) >= 3)
         set_rule(begin_hearts_quest, lambda state: state.has_all(("Bar", "Devon", "Kyrie", "Jasper"), self.player) and self.get_rank(state) >= 3) 
         set_rule(to_warehouse, lambda state: self.can_lockpick(state) and (state.can_reach_location("Hornet Queen", self.player) or state.can_reach_location("Casino Investigation", self.player)))
         set_rule(to_beach, lambda state: state.has_any(("Devon", "Kyrie", "Jasper"), self.player))
@@ -90,6 +96,18 @@ class IHYPSRules:
             "Photograph": lambda state: state.has_all(("Envelope", "Jasper"), self.player),
             "Death Pugilist": lambda state: state.can_reach_location("Melchom 1", self.player),
             "Stinger Trade": lambda state: (state.has("Forest", self.player) or state.can_reach_region("Warehouse", self.player)) and self.can_do_combat(state),
+
+            "Level 2": self.can_do_combat,
+            "Level 3": self.can_do_combat,
+            "Level 4": self.can_do_combat,
+            "Level 5": self.can_do_combat,
+            "Level 6": self.can_do_combat,
+            "Level 7": self.can_do_combat,
+            "Level 8": self.can_do_combat,
+            "Level 9": self.can_do_combat,
+            "Level 10": self.can_do_combat,
+            "Level 11": self.can_do_combat,
+
             # bar locations
             "Bar Vinyl": lambda state: self.can_get_money(state) and state.has("Progressive AL Rank", self.player),
             "Kyrie: Pills": self.has_kyrie,
@@ -97,13 +115,13 @@ class IHYPSRules:
             "Sandy Gift": lambda state: state.can_reach_location("Casino Investigation", self.player) and self.can_get_money(state),
             "Seki Gift": lambda state: state.has("Progressive AL Rank", self.player),
             "Wallace Gift": lambda state: self.has_devon(state) and state.has("Progressive AL Rank", self.player),
-            "Scaled Bass Buyer": lambda state: state.has("Harbor", self.player),
+            "Scaled Bass Buyer": lambda state: state.has_all(("Harbor", "Kyrie"), self.player),
             "Lee Gift": lambda state: state.can_reach_location("Sandy Gift", self.player),
             "Cyril Gift": lambda state: state.can_reach_location("Sandy Gift", self.player),
             "Kyrie: The Clinic": self.has_kyrie,
             "Back of the Clinic": self.has_devon,
             "Devon: The Siren": lambda state: self.has_devon(state) and state.can_reach_location("Necromancy Investigation", self.player),
-            "Graveyard Chest": self.can_lockpick,
+            "Graveyard Chest": lambda state: state.has("Lockpicking Guide", self.player) and self.can_do_combat(state),
             "Jasper: In Memoriam": self.has_jasper,
             "Marshall Gift": lambda state: state.can_reach_location("Lonely Hearts Quest", self.player),
             "Mourner Gift": lambda state: state.can_reach_region("Beach", self.player),
@@ -117,7 +135,7 @@ class IHYPSRules:
             "Necromancy Investigation": lambda state: self.get_rank(state) >= 2 and self.count_party_members(state) >= 3 and self.has_kyrie(state),
             "Haunted Arcade Cabinet": lambda state: self.get_rank(state) >= 2 and self.count_party_members(state) >= 3 and state.has_all(("Arcade Token", "Harbor"), self.player),
             "Casino Investigation": lambda state: self.get_rank(state) >= 3 and self.count_party_members(state) == 4 and state.has_all(("Downtown", "Harbor"), self.player),
-            "Lighthouse Reclamation": lambda state: self.get_rank(state) >= 3 and self.count_party_members(state) == 4 and state.has("Harbor", self.player) and (state.has_all(("Forest", "Lion's Den Password"), self.player) or state.has("Tower", self.player)),
+            "Lighthouse Reclamation": lambda state: self.get_rank(state) >= 3 and state.can_reach_region("Beach", self.player) and (state.has_all(("Forest", "Lion's Den Password"), self.player) or state.has("Tower", self.player)) and (self.has_full_party(state) or (state.has_all(("Forest", "Devon", "Lockpicking Guide"), self.player))),
             "Lonely Hearts Quest": lambda state: state.can_reach_region("Hearts Tower", self.player),
             "Stanley Gift": lambda state: state.can_reach_location("Lighthouse Reclamation", self.player),
             "Devon: Learning About Artifacts": lambda state: state.has("Devon", self.player) and state.can_reach_location("Group Infighting", self.player),
@@ -291,7 +309,7 @@ class IHYPSRules:
         return state.has_any(("Devon", "Kyrie", "Jasper", "Working for the Knife", "Kitchen Knife", "Meat Cleaver", "Magic Knife"), self.player)
 
     def can_get_money(self, state: CollectionState) -> bool:
-        return state.has("Bar", self.player) and (self.can_do_combat(state) or state.has_any(("Harbor, Tower"), self.player))
+        return (state.has("Bar", self.player) and (self.can_do_combat(state) or state.has_any(("Harbor, Tower"), self.player))) or (state.has("Progressive AL Rank", self.player) and self.can_do_combat(state))
 
     def count_party_members(self, state: CollectionState) -> int:
         return state.count_from_list(("Devon", "Kyrie", "Jasper"), self.player) + 1
