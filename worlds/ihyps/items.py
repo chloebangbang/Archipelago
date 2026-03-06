@@ -225,13 +225,13 @@ def get_random_filler_item_name(world) -> str:
             return "Artifact Gatcha"
         elif filler_roll < 60:
             return "Miracle Drink"
-        elif filler_roll < 70:
+        elif filler_roll < 65:
             return "Estrogen"
-        elif filler_roll < 80:
+        elif filler_roll < 70:
             return "Testosterone"
-        elif filler_roll < 86:
+        elif filler_roll < 72:
             return "Artifact Tarot"
-        elif filler_roll < 88:
+        elif filler_roll < 76:
             return "Nothing..."
         else:
             return "Albing Weapon"
