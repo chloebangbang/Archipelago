@@ -74,7 +74,7 @@ class IHYPSRules:
             "Craft Burner Phone": lambda state: state.can_reach_entrance("To Beach", self.player) and state.has_all(("Lion's Den Password", "Devon"), self.player),
             "Mack 1": lambda state: (state.has("Forest", self.player) or state.can_reach_region("Warehouse", self.player)) and self.count_party_members(state) > 2,
             "Mack 2": lambda state: (state.has("Forest", self.player) or state.can_reach_region("Warehouse", self.player)) and self.count_party_members(state) > 2,
-            "The Butcher": lambda state: state.has_all(("Tower", "Meat Cleaver"), self.player) and self.count_party_members(state) >= 2,
+            "The Butcher": lambda state: state.has_all(("Tower", "Meat Cleaver"), self.player) and self.count_party_members(state) >= 2 and self.can_lockpick(state),
             "Apartment Sewers": self.can_lockpick,
             # after much deliberation making these sphere 1
             # you can run from most of the encounters 100% of the time
@@ -179,7 +179,7 @@ class IHYPSRules:
             "Return Phone": lambda state: state.has("Lost Cell Phone", self.player),
             "Getting to Know Devon": self.has_devon,
             "Kyrie: Not My Fault": self.has_kyrie,
-            "Minor Scale Trade": lambda state: self.can_do_combat(state) and (state.has_any(("Forest", "Bar"), self.player) or state.can_reach_region("Beach", self.player)),
+            "Minor Scale Trade": lambda state: self.has_devon(state) and self.can_do_combat(state) and (state.has_any(("Forest", "Bar"), self.player) or state.can_reach_region("Beach", self.player)),
             "Dungeon Food Stall": self.can_lockpick,
             "Dungeon Sewers Chest": lambda state: self.can_lockpick(state) and self.can_do_combat(state),
             "Devon: Sewer Slimes": lambda state: self.can_do_combat(state) and self.has_devon(state),
@@ -289,9 +289,9 @@ class IHYPSRules:
             "Raccoon King Assassin": lambda state: state.can_reach_location("Lighthouse Reclamation", self.player) and state.can_reach_location("Legendary Raccoon", self.player),
             "Jasper: Beautiful Day": self.has_jasper,
             "Devon: Cursed": self.has_devon,
-            "Black Market Crafter": lambda state: state.has_all(("Lion's Den Password", "Strange Driftwood"), self.player), 
-            "Fired Company Man": lambda state: (state.can_reach_region("Tower Stratum 1", self.player) and self.has_devon(state)) or self.has_full_party(state),
-            "Black Market Lost and Found": lambda state: state.has("Lion's Den Password", self.player),
+            "Black Market Crafter": lambda state: state.has_all(("Lion's Den Password", "Strange Driftwood"), self.player) and state.can_reach_location("Minor Scale Trade"), 
+            "Fired Company Man": lambda state: state.can_reach_region("Tower Stratum 1", self.player) and (self.count_party_members(state) > 2),
+            "Black Market Lost and Found": lambda state: state.has_all(("Lion's Den Password", "Jasper"), self.player),
         }
 
         multiworld = self.world.multiworld
