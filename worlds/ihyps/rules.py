@@ -74,7 +74,7 @@ class IHYPSRules:
             "Craft Burner Phone": lambda state: state.can_reach_entrance("To Beach", self.player) and state.has_all(("Lion's Den Password", "Devon"), self.player),
             "Mack 1": lambda state: (state.has("Forest", self.player) or state.can_reach_region("Warehouse", self.player)) and self.count_party_members(state) > 2,
             "Mack 2": lambda state: (state.has("Forest", self.player) or state.can_reach_region("Warehouse", self.player)) and self.count_party_members(state) > 2,
-            "The Butcher": lambda state: state.has_all(("Tower", "Meat Cleaver"), self.player) and self.count_party_members(state) >= 2 and self.can_lockpick(state),
+            "The Butcher": lambda state: state.has_all(("Tower", "Meat Cleaver"), self.player) and self.count_party_members(state) >= 2,
             "Apartment Sewers": self.can_lockpick,
             # after much deliberation making these sphere 1
             # you can run from most of the encounters 100% of the time
@@ -289,7 +289,7 @@ class IHYPSRules:
             "Raccoon King Assassin": lambda state: state.can_reach_location("Lighthouse Reclamation", self.player) and state.can_reach_location("Legendary Raccoon", self.player),
             "Jasper: Beautiful Day": self.has_jasper,
             "Devon: Cursed": self.has_devon,
-            "Black Market Crafter": lambda state: state.has_all(("Lion's Den Password", "Strange Driftwood"), self.player) and state.can_reach_location("Minor Scale Trade"), 
+            "Black Market Crafter": lambda state: state.has_all(("Lion's Den Password", "Strange Driftwood", "Devon", "Tower"), self.player),
             "Fired Company Man": lambda state: state.can_reach_region("Tower Stratum 1", self.player) and (self.count_party_members(state) > 2),
             "Black Market Lost and Found": lambda state: state.has_all(("Lion's Den Password", "Jasper"), self.player),
         }

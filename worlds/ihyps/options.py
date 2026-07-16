@@ -25,9 +25,25 @@ class NoLogic(Toggle):
     # """
     # option_fresh_start: 0
     # option_happy_ending: 1
-    # option_happy_ending_plus_gacy: 2
+    # option_rental: 2
+    # # option_siren: 3
 
-    # default = option_happy_ending_plus_gacy
+    # default = option_happy_ending
+
+# class RequireGacy(Toggle): 
+    # """
+    # Whether defeating Gacy is required to trigger your ending.
+    # Requires the Sealed Envelope, all three rank 3 quests, 
+    # """
+    # display_name = "Require Gacy Fight"
+
+    # default = False
+
+# class ExcludeAnnoyingChecks(Toggle):
+    # """
+    # Excludes all the annoying checks that quite frankly probably aren't worth the time.
+    # This includes Clarence, Casino Punishment, some others, I'll finish this later
+    # """
 
 class Skillsanity(Toggle):
     """
@@ -46,5 +62,6 @@ class TrapChance(Range):
 class IHYPSOptions(PerGameCommonOptions):
     no_logic: NoLogic
     # goal: Goal
+    # require_gacy: RequireGacy
     skillsanity: Skillsanity
     trap_chance: TrapChance
